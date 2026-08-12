@@ -1,0 +1,51 @@
+# =========================================================================
+# === .NET (C#) Artifacts ===
+# =========================================================================
+# Pastas de compilação e arquivos binários gerados pelo .NET SDK
+[Bb]in/
+[Oo]bj/
+*.exe
+*.dll
+*.pdb
+*.node
+
+# =========================================================================
+# === IDEs & Editors Configuration ===
+# =========================================================================
+# Arquivos temporários e configurações locais do Visual Studio
+.vs/
+*.user
+*.suo
+*.sln.docstates
+*.slnx.user
+
+# Arquivos de configuração do VS Code (exceto recomendações de extensões)
+.vscode/
+!.vscode/extensions.json
+*.code-workspace
+.history/
+
+# Arquivos do Rider / JetBrains
+.idea/
+*.sln.iml
+
+# =========================================================================
+# === Docker ===
+# =========================================================================
+# Arquivos de log e estados locais do Docker (se gerados na pasta do app)
+.docker/
+
+# =========================================================================
+# === Local Database & Persistent Volumes ===
+# =========================================================================
+# CRÍTICO: Impede que os arquivos físicos do PostgreSQL do seu Docker
+# sejam enviados para o GitHub, evitando upload de gigabytes desnecessários e vazamentos.
+postgres_data/
+
+# =========================================================================
+# === Secrets & Environment Files ===
+# =========================================================================
+# Arquivos com chaves de acesso, tokens e variáveis de ambiente reais
+.env
+.env.*
+usrlocalsecret*
