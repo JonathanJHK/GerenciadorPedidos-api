@@ -8,8 +8,8 @@ namespace GerenciadorPedido.Api.DTOs.Comum
         // Número da página atual
         public int Pagina { get; set; }
 
-        // Tamanho da página (quantidade de itens por página)
-        public int TamanhoPagina { get; set; }
+        // Número de itens por página
+        public int itensPorPagina { get; set; }
 
         // Total de itens disponíveis no total
         public int TotalItens { get; set; }

@@ -17,6 +17,8 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseNpgsql(connect
 
 // Registrando o serviço de produtos no contêiner de serviços
 builder.Services.AddScoped<IProdutoService, ProdutoService>();
+// Registrando o serviço de pedidos no contêiner de serviços
+builder.Services.AddScoped<IPedidoService, PedidoService>();
 
 var app = builder.Build();
 

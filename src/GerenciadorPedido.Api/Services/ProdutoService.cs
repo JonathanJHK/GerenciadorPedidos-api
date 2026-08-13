@@ -59,7 +59,7 @@ namespace GerenciadorPedido.Api.Services
             // Busca o produto no banco de dados pelo ID
             var produto = await _appDbContext.Produtos
                 .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(produto => produto.Id == id);
 
             // Se o produto não for encontrado, retorna null
             if (produto is null)
@@ -113,8 +113,8 @@ namespace GerenciadorPedido.Api.Services
             var produtos = await produtosQuery
             .AsNoTracking()
             .OrderBy(p => p.Id)
-            .Skip((filtro.Pagina - 1) * filtro.TamanhoPagina) // Calcula a quantidade de itens a serem pulados com base na página atual e no tamanho da página
-            .Take(filtro.TamanhoPagina) // Limita a quantidade de itens retornados com base no tamanho da página
+            .Skip((filtro.Pagina - 1) * filtro.itensPorPagina) // Calcula a quantidade de itens a serem pulados com base na página atual e no itens por página
+            .Take(filtro.itensPorPagina) // Limita a quantidade de itens retornados com base no itens por página
             .ToListAsync();
 
             // Retorna a lista de produtos mapeada para ProdutoResponseDTO
@@ -130,9 +130,9 @@ namespace GerenciadorPedido.Api.Services
                     DataDeCadastro = p.DataDeCadastro
                 }).ToList(),
                 Pagina = filtro.Pagina,
-                TamanhoPagina = filtro.TamanhoPagina,
+                itensPorPagina = filtro.itensPorPagina,
                 TotalItens = totalItens,
-                TotalPaginas = (int)Math.Ceiling((double)totalItens / filtro.TamanhoPagina) // Calcula o total de páginas com base no total de itens e no tamanho da página
+                TotalPaginas = (int)Math.Ceiling((double)totalItens / filtro.itensPorPagina) // Calcula o total de páginas com base no total de itens e no itens por página
             };
 
         }
@@ -141,7 +141,7 @@ namespace GerenciadorPedido.Api.Services
         {
             // Busca o produto no banco de dados pelo ID
             var produto = await _appDbContext.Produtos
-            .FirstOrDefaultAsync(p => p.Id == id);
+            .FirstOrDefaultAsync(produto => produto.Id == id);
 
             // Se o produto nao for encontrado, retorna null
             if (produto is null)
@@ -184,7 +184,7 @@ namespace GerenciadorPedido.Api.Services
         {
             // Busca o produto no banco de dados pelo ID
             var produto = await _appDbContext.Produtos
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(produto => produto.Id == id);
 
             // Se o produto não for encontrado, retorna false
             if (produto is null)

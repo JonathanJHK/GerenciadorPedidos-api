@@ -14,10 +14,10 @@ namespace GerenciadorPedido.Api.DTOs.Produtos
         [Range(0, double.MaxValue, ErrorMessage = "O preço máximo não pode ser negativo.")]
         public decimal? PrecoMaximo { get; set; }
 
-        [Range(1, int.MaxValue, ErrorMessage = "O tamanho da pagina deve ser maior que 0.")]
+        [Range(1, int.MaxValue, ErrorMessage = "O número da página deve ser maior que 0.")]
         public int Pagina { get; set; } = 1;
 
-        [Range(1, 100, ErrorMessage = "O tamanho da pagina deve ser maior que 0.")]
-        public int TamanhoPagina { get; set; } = 20;
+        [Range(1, 100, ErrorMessage = "Itens por pagina deve ser maior que 0.")]
+        public int itensPorPagina { get; set; } = 20;
     }
 }

@@ -34,7 +34,11 @@ namespace GerenciadorPedido.Api.Controllers
             }
 
             // Retorna o produto criado com o status HTTP 201 (Created)
-            return Created("Produto criado com sucesso.", produto);
+            return StatusCode(201, new
+            {
+                mensagem = "Produto criado com sucesso.",
+                produto
+            });
         }
 
         [HttpGet("{id:int}")]
