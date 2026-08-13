@@ -81,7 +81,7 @@ namespace GerenciadorPedido.Api.Controllers
             {
                 return NotFound(new
                 {
-                    mensagem = "Produto não encontrado ou já existe outro produto com o mesmo nome."
+                    mensagem = "Produto não encontrado."
                 });
             }
 

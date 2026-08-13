@@ -2,6 +2,7 @@ using GerenciadorPedido.Api.Data;
 using GerenciadorPedido.Api.DTOs.Comum;
 using GerenciadorPedido.Api.DTOs.Produtos;
 using GerenciadorPedido.Api.Entities;
+using GerenciadorPedido.Api.Exceptions;
 using GerenciadorPedido.Api.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,8 +26,7 @@ namespace GerenciadorPedido.Api.Services
 
             if (nomeProdutoJaExiste)
             {
-                // Se já existir, retorna null
-                return null;
+                throw new NomeProdutoJaExisteException();
             }
 
             // Cria uma nova instância da entidade Produto
@@ -156,7 +156,7 @@ namespace GerenciadorPedido.Api.Services
             // Se já existir, retorna null
             if (nomeProdutoJaExiste)
             {
-                return null;
+                throw new NomeProdutoJaExisteException();
             }
 
             // Atualiza os dados do produto
@@ -190,6 +190,16 @@ namespace GerenciadorPedido.Api.Services
             if (produto is null)
             {
                 return false;
+            }
+
+            // Verifica se o produto possui pedidos associados no banco de dados
+            var possuiPedidos = await _appDbContext.Pedidos
+            .AnyAsync(p => p.ProdutoId == id);
+
+            // Se o produto possuir pedidos, lança uma exceção
+            if (possuiPedidos)
+            {
+                throw new ProdutoPossuiPedidosException();
             }
 
             // Remove o produto do banco de dados

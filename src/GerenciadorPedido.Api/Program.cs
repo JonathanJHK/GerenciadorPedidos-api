@@ -1,4 +1,5 @@
 using GerenciadorPedido.Api.Data;
+using GerenciadorPedido.Api.Handlers;
 using GerenciadorPedido.Api.Interfaces;
 using GerenciadorPedido.Api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -20,7 +21,15 @@ builder.Services.AddScoped<IProdutoService, ProdutoService>();
 // Registrando o serviço de pedidos no contêiner de serviços
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 
+// Adicionando o middleware para lidar com exceções globais
+builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+
+builder.Services.AddProblemDetails();
+
 var app = builder.Build();
+
+// Adicionando o middleware para lidar com exceções globais
+app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
