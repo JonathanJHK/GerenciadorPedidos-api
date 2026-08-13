@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using GerenciadorPedido.Api.DTOs.Comum;
 using GerenciadorPedido.Api.DTOs.Produtos;
 
 namespace GerenciadorPedido.Api.Interfaces
@@ -12,7 +9,9 @@ namespace GerenciadorPedido.Api.Interfaces
 
         Task<ProdutoResponseDTO?> BuscarPorId(int id);
 
-        Task<List<ProdutoResponseDTO>> Listar();
+        Task<PaginacaoResponseDTO<ProdutoResponseDTO>> Listar(
+            ProdutoFiltroDTO filtro
+        );
 
         Task<ProdutoResponseDTO?> Atualizar(
             int id,

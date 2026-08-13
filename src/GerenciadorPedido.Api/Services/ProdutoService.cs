@@ -1,4 +1,5 @@
 using GerenciadorPedido.Api.Data;
+using GerenciadorPedido.Api.DTOs.Comum;
 using GerenciadorPedido.Api.DTOs.Produtos;
 using GerenciadorPedido.Api.Entities;
 using GerenciadorPedido.Api.Interfaces;
@@ -77,23 +78,63 @@ namespace GerenciadorPedido.Api.Services
             };
         }
 
-        public async Task<List<ProdutoResponseDTO>> Listar()
+        public async Task<PaginacaoResponseDTO<ProdutoResponseDTO>> Listar(ProdutoFiltroDTO filtro)
         {
-            var produtos = await _appDbContext.Produtos
+            // Cria uma consulta de produtos usado para construir a consulta de forma dinâmica
+            var produtosQuery = _appDbContext.Produtos.AsNoTracking().AsQueryable();
+
+            // Se o filtro de nome for informado, filtra os produtos pelo nome
+            if (!string.IsNullOrEmpty(filtro.Nome))
+            {
+                produtosQuery = produtosQuery.Where(p => p.Nome.ToLower().Contains(filtro.Nome.ToLower()));
+            }
+
+            // Se o filtro de categoria for informado, filtra os produtos pela categoria
+            if (!string.IsNullOrEmpty(filtro.Categoria))
+            {
+                produtosQuery = produtosQuery.Where(p => p.Categoria.ToLower().Contains(filtro.Categoria.ToLower()));
+            }
+
+            // Se o filtro de preço mínimo for informado, filtra os produtos pelo preço mínimo
+            if (filtro.PrecoMinimo.HasValue)
+            {
+                produtosQuery = produtosQuery.Where(p => p.Preco >= filtro.PrecoMinimo.Value);
+            }
+
+            // Se o filtro de preço máximo for informado, filtra os produtos pelo preço máximo
+            if (filtro.PrecoMaximo.HasValue)
+            {
+                produtosQuery = produtosQuery.Where(p => p.Preco <= filtro.PrecoMaximo.Value);
+            }
+
+            // Calcula o total de itens que atendem aos filtros aplicados
+            var totalItens = await produtosQuery.CountAsync();
+
+            var produtos = await produtosQuery
             .AsNoTracking()
             .OrderBy(p => p.Id)
+            .Skip((filtro.Pagina - 1) * filtro.TamanhoPagina) // Calcula a quantidade de itens a serem pulados com base na página atual e no tamanho da página
+            .Take(filtro.TamanhoPagina) // Limita a quantidade de itens retornados com base no tamanho da página
             .ToListAsync();
 
-            // Retorna a lista de produtos mapeada para ProdutoResponseDTO, Select é usado para projetar cada produto em um ProdutoResponseDTO
-            return produtos.Select(p => new ProdutoResponseDTO
+            // Retorna a lista de produtos mapeada para ProdutoResponseDTO
+            return new PaginacaoResponseDTO<ProdutoResponseDTO>
             {
-                Id = p.Id,
-                Nome = p.Nome,
-                Categoria = p.Categoria,
-                Preco = p.Preco,
-                QuantidadeEmEstoque = p.QuantidadeEmEstoque,
-                DataDeCadastro = p.DataDeCadastro
-            }).ToList();
+                Itens = produtos.Select(p => new ProdutoResponseDTO
+                {
+                    Id = p.Id,
+                    Nome = p.Nome,
+                    Categoria = p.Categoria,
+                    Preco = p.Preco,
+                    QuantidadeEmEstoque = p.QuantidadeEmEstoque,
+                    DataDeCadastro = p.DataDeCadastro
+                }).ToList(),
+                Pagina = filtro.Pagina,
+                TamanhoPagina = filtro.TamanhoPagina,
+                TotalItens = totalItens,
+                TotalPaginas = (int)Math.Ceiling((double)totalItens / filtro.TamanhoPagina) // Calcula o total de páginas com base no total de itens e no tamanho da página
+            };
+
         }
 
         public async Task<ProdutoResponseDTO?> Atualizar(int id, AtualizarProdutoDTO dadosAtualizados)

@@ -1,3 +1,4 @@
+using GerenciadorPedido.Api.DTOs.Comum;
 using GerenciadorPedido.Api.DTOs.Produtos;
 using GerenciadorPedido.Api.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -55,9 +56,9 @@ namespace GerenciadorPedido.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<ProdutoResponseDTO>>> Listar()
+        public async Task<ActionResult<PaginacaoResponseDTO<ProdutoResponseDTO>>> Listar([FromQuery] ProdutoFiltroDTO filtro)
         {
-            var produtos = await _produtoService.Listar();
+            var produtos = await _produtoService.Listar(filtro);
 
             return StatusCode(200, produtos);
         }
