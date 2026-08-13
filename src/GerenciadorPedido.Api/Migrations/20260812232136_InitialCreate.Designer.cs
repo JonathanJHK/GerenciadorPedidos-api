@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace GerenciadorPedido.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260812205335_InitialCreate")]
+    [Migration("20260812232136_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -83,7 +83,7 @@ namespace GerenciadorPedido.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("GerenciadorPedido.Api.Entities.Pedido", b =>

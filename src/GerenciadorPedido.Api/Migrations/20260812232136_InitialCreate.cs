@@ -13,7 +13,7 @@ namespace GerenciadorPedido.Api.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Products",
+                name: "Produtos",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -26,7 +26,7 @@ namespace GerenciadorPedido.Api.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Products", x => x.Id);
+                    table.PrimaryKey("PK_Produtos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -44,9 +44,9 @@ namespace GerenciadorPedido.Api.Migrations
                 {
                     table.PrimaryKey("PK_Pedidos", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Pedidos_Products_ProdutoId",
+                        name: "FK_Pedidos_Produtos_ProdutoId",
                         column: x => x.ProdutoId,
-                        principalTable: "Products",
+                        principalTable: "Produtos",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -64,7 +64,7 @@ namespace GerenciadorPedido.Api.Migrations
                 name: "Pedidos");
 
             migrationBuilder.DropTable(
-                name: "Products");
+                name: "Produtos");
         }
     }
 }

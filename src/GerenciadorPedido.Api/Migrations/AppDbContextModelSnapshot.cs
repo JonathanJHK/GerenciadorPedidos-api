@@ -80,7 +80,7 @@ namespace GerenciadorPedido.Api.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products");
+                    b.ToTable("Produtos");
                 });
 
             modelBuilder.Entity("GerenciadorPedido.Api.Entities.Pedido", b =>

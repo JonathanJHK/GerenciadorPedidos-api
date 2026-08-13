@@ -11,7 +11,7 @@ namespace GerenciadorPedido.Api.Data
         }
 
         // Define as propriedades DbSet para as entidades Produto e Pedido
-        public DbSet<Produto> Products => Set<Produto>();
+        public DbSet<Produto> Produtos => Set<Produto>();
         public DbSet<Pedido> Pedidos => Set<Pedido>();
 
         // Configura o modelo de dados usando o Fluent API
